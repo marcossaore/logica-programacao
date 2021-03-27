@@ -109,12 +109,14 @@ const  proximaJogada = async (jogadorJogando, proximoJogadorAjogar) => {
     posicoesDaMesa[[Number(resposta)] - 1] = jogadorJogando.simbolo
 
     if (conferirJogoParaSimbolo(jogadorJogando.simbolo)) {
+        console.clear()
         mostrarMesa()
         console.log(jogadorJogando.nome, ' venceu!')
         await jogarOutraPartida()
     }
 
     if (conferirJogoParaSimbolo(jogadorJogando.simbolo)) {
+        console.clear()
         mostrarMesa()
         console.log(jogadorJogando.nome, ' venceu!')
         await jogarOutraPartida()
@@ -129,12 +131,14 @@ const  proximaJogada = async (jogadorJogando, proximoJogadorAjogar) => {
 }
 
 const jogarOutraPartida = async ( ) => {
-    let outraPartida = await criarQuestaoERetornarResposta('Deseja jogar outra partida? [S] ou [N]')
+    let outraPartida = await criarQuestaoERetornarResposta('Deseja jogar outra partida? [S] ou [N]: ')
     while (!outraPartida.match(/\b[sSnN]\b/)) {
         console.clear()
-        outraPartida = await criarQuestaoERetornarResposta('Deseja jogar outra partida? [S] ou [N]')
+        outraPartida = await criarQuestaoERetornarResposta('Deseja jogar outra partida? [S] ou [N]: ')
     }
     outraPartida = outraPartida.toLowerCase()
+
+    console.clear()
     
     if (outraPartida == 'n') {
         console.log(':) até logo!')
@@ -149,15 +153,13 @@ const jogarOutraPartida = async ( ) => {
 
 const iniciarPartida = async () => {
     try {
-        const finalizarJogo = false
-
         let selecaoJogo = await criarQuestaoERetornarResposta(
-            'Selecione: [1] Dois Jogadores [2] Contra a máquina \n'
+            'Selecione apenas as opções [1] Dois Jogadores [2] Contra a máquina: '
         )
 
         while (!selecaoJogo.match(/\b[1-2]{1}\b/)) {
             console.clear()
-            selecaoJogo = await criarQuestaoERetornarResposta('Selecione apenas as opções [1] Dois Jogadores [2] Contra a máquina \n')
+            selecaoJogo = await criarQuestaoERetornarResposta('Selecione apenas as opções [1] Dois Jogadores [2] Contra a máquina: ')
         }
 
         console.clear()
