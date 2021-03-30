@@ -6,9 +6,9 @@ const divide =  64 / 35
 const restoDivisao1 = 11 % 2
 const restoDivisao2 = 100 % 2
 
-console.log('soma ', soma)
-console.log('subtrai ', subtrai)
-console.log('multiplica ', multiplica)
-console.log('divide ', divide)
-console.log('restoDivisao1 ', restoDivisao1)
-console.log('restoDivisao2 ', restoDivisao2)
+console.log('1 + 2 = ', soma)
+console.log('90 - 45 = ', subtrai)
+console.log('4 * 4 = ', multiplica)
+console.log('64 / 35 = ', divide)
+console.log('11 % 2 = ', restoDivisao1)
+console.log('100 % 2 ', restoDivisao2)

@@ -84,29 +84,68 @@ const conferirJogoParaSimbolo = (simbolo) => {
     return jogoGanho
 }
 
+const simularPensamento = async (jogador) => {
+
+    console.log(`${jogador.nome} está pensando....`)
+
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            return resolve()
+        }, 3000)
+    })
+}
+
 const  proximaJogada = async (jogadorJogando, proximoJogadorAjogar) => {
     console.clear()
             
     console.log(`${jogadorJogando.nome} é a sua vez, digite um numero de 1 a 9:\n`)
 
+    mostrarMesa(jogadorJogando)
+
+    if(jogadorJogando.tipo === 'robo') {
+
+        await simularPensamento(jogadorJogando)
+
+        let posicoesDisponiveis = []
+
+        for (let index = 0; index < 9; index++) {
+            if(!posicoesDaMesa[index]) {
+                posicoesDisponiveis.push(index + 1)
+            }
+        }
+
+        if (posicoesDisponiveis.length  === 0) {
+            for (let index = 0; index < 9; index++) {
+                posicoesDisponiveis.push(index + 1)
+            }
+        }
+
+        const posicaoJogadaAleatoria = (Math.floor(Math.random() * ( posicoesDisponiveis.length - 1 ) ) + 0)
+
+        mesaVelha = mesaVelha.replace(posicoesDisponiveis[posicaoJogadaAleatoria], jogadorJogando.simbolo)
+
+        posicoesDaMesa[Number(posicoesDisponiveis[posicaoJogadaAleatoria] - 1)] = jogadorJogando.simbolo
+    }else {
+
+        let resposta = await criarQuestaoERetornarResposta('')
+
+        while (!resposta.match(/\b[1-9]{1}\b/)) {
+            resposta = await criarQuestaoERetornarResposta(`${jogadorJogando.nome} Você deve digitar um numero de 1 a 9:\n`)
+        }
+    
+        let repostaEstaMarcadaNamesa = mesaVelha.match(resposta)
+    
+        while (!repostaEstaMarcadaNamesa) {
+            resposta = await criarQuestaoERetornarResposta(`${jogadorJogando.nome} digite um numero de 1 a 9 (que não esteja marcado):\n`)
+            repostaEstaMarcadaNamesa = mesaVelha.match(resposta)
+        }
+    
+        mesaVelha = mesaVelha.replace(resposta, jogadorJogando.simbolo)
+
+        posicoesDaMesa[Number(resposta) - 1] = jogadorJogando.simbolo
+    }
+
     mostrarMesa()
-
-    let resposta = await criarQuestaoERetornarResposta('')
-
-    while (!resposta.match(/\b[1-9]{1}\b/)) {
-        resposta = await criarQuestaoERetornarResposta(`${jogadorJogando.nome} Você deve digitar um numero de 1 a 9:\n`)
-    }
-
-    let repostaEstaMarcadaNamesa = mesaVelha.match(resposta)
-
-    while (!repostaEstaMarcadaNamesa) {
-        resposta = await criarQuestaoERetornarResposta(`${jogadorJogando.nome} digite um numero de 1 a 9 (que não esteja marcado):\n`)
-        repostaEstaMarcadaNamesa = mesaVelha.match(resposta)
-    }
-
-    mesaVelha = mesaVelha.replace(resposta, jogadorJogando.simbolo)
-
-    posicoesDaMesa[[Number(resposta)] - 1] = jogadorJogando.simbolo
 
     if (conferirJogoParaSimbolo(jogadorJogando.simbolo)) {
         console.clear()
@@ -166,18 +205,21 @@ const iniciarPartida = async () => {
 
         let jogador = {
             nome: '😆 ',
-            simbolo: 'X'
+            simbolo: 'X',
+            tipo: 'humano'
         }
 
         let jogador2 =  {
-            nome: '🤖 Jeremias Robot',
-            simbolo: 'O'
+            nome: '🤖 Jeremias Robô',
+            simbolo: 'O',
+            tipo: 'robo'
         }
 
         if ( selecaoJogo == '1' ) {
             jogador.nome += await criarQuestaoERetornarResposta('Insira o nome do primeiro jogador: ')
             console.clear()
             jogador2.nome = '🥺 ' + await criarQuestaoERetornarResposta('Insira o nome do segundo jogador: ')
+            jogador2.tipo = 'humano'
         }else {
             jogador.nome += await criarQuestaoERetornarResposta('Insira seu nome: ')
         }
@@ -186,7 +228,7 @@ const iniciarPartida = async () => {
 
         const embaralharJogadores = Math.floor(Math.random() * 10) % 2 == 0 ? [ jogador, jogador2 ] : [ jogador2 , jogador] 
 
-        proximaJogada(embaralharJogadores[0], embaralharJogadores[1])
+        await proximaJogada(embaralharJogadores[0], embaralharJogadores[1])
     
     } catch (erro) {
         console.error(erro)

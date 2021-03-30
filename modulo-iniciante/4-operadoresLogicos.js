@@ -24,7 +24,10 @@ const valorCarro = 900000
 const valorQuetenhoParaCarro = 900000
 const valorQuetenhoParaCarroTexto = '900000'
 
-console.log(`valorCarro: R$ ${valorCarro}  é igual a que tenho R$ ${valorQuetenhoParaCarro}`, valorCarro == valorQuetenhoParaCarro)
+console.log(
+    `valorCarro: R$ ${valorCarro}  é igual a que tenho R$ ${valorQuetenhoParaCarro}`,
+    valorCarro == valorQuetenhoParaCarro
+)
 console.log(`valorCarro: R$ ${valorCarro}  é igual a que tenho R$ ${valorQuetenhoParaCarro}`, valorCarro == valorQuetenhoParaCarroTexto)
 
 console.log(`valorCarro: R$ ${valorCarro}  é igual a que tenho (confere tambem pelo tipo) R$ ${valorQuetenhoParaCarro}`, valorCarro === valorQuetenhoParaCarro)
