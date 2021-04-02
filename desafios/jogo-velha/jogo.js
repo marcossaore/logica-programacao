@@ -127,8 +127,6 @@ const  proximaJogada = async (jogadorJogando, proximoJogadorAjogar) => {
         posicoesDaMesa[Number(posicoesDisponiveis[posicaoJogadaAleatoria] - 1)] = jogadorJogando.simbolo
     }else {
 
-        let resposta = await criarQuestaoERetornarResposta('')
-
         while (!resposta.match(/\b[1-9]{1}\b/)) {
             resposta = await criarQuestaoERetornarResposta(`${jogadorJogando.nome} Você deve digitar um numero de 1 a 9:\n`)
         }
